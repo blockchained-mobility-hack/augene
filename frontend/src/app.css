@@ -1,3 +1,10 @@
+
+@import url('https://fonts.googleapis.com/css?family=Work+Sans:500,900');
+
+body {
+  font-family: 'Work Sans', sans-serif;
+}
+
 .App {
   text-align: center;
 }
@@ -29,7 +36,7 @@
 
 .tooltip {
   position: absolute;
-  background-color: red;
+  background-color: white;
   padding:20px;
   z-index: 1000;
   font-size: 14px;
@@ -39,6 +46,30 @@
   margin-left: 20px;
 }
 
+
+.tooltip:after, .tooltip:before {
+  right: 100%;
+  top: 50%;
+  border: solid transparent;
+  content: " ";
+  height: 0;
+  width: 0;
+  position: absolute;
+  pointer-events: none;
+}
+
+.tooltip:after {
+  border-color: rgba(136, 183, 213, 0);
+  border-right-color: white;
+  border-width: 10px;
+  margin-top: -10px;
+}
+.tooltip:before {
+  border-color: rgba(194, 225, 245, 0);
+  border-right-color: white;
+  border-width: 12px;
+  margin-top: -12px;
+}
 .metaview {
   position: absolute;
 
@@ -48,6 +79,11 @@
   opacity: 0;
   pointer-events: none;
   top:20px;
+
+  /*-webkit-transition-delay: 2500ms;
+    -moz-transition-delay: 2500ms;
+    -o-transition-delay: 2500ms;
+    transition-delay: 2500ms;*/
 
     -webkit-transition: opacity 200ms ease-in-out, top 200ms ease-in-out;
   -moz-transition: opacity 200ms ease-in-out, top 200ms ease-in-out;
@@ -108,11 +144,51 @@
 }
 
 
-
 .metaview .container .closebutton:hover {
-  
    background-color: rgb(240, 240, 240);
    color: black;
    cursor: pointer;
+}
 
+.publish-page {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.button:hover {
+  cursor: pointer;
+}
+
+.publish-page .button {
+  background-color: springgreen;
+  width: 500px;
+  height: 300px;
+  display: flex;
+  font-size: 100px;
+  font-weight: 900;
+  align-items: center;
+  justify-content: center;
+}
+
+.publish-page .button:hover {
+  background-color: black;
+  color: white;
+}
+
+.publish-page .stat {
+  display: flex;
+  width: 500px;
+  font-size: 40px;
+  justify-content: space-between;
+}
+
+.publish-page .stat:first-child {
+  flex: 2;
+}
+
+.publish-page .stat:first-child {
+  flex: 1;
 }

@@ -66,7 +66,7 @@ const trips = files.map((file, i) => {
     to: file.to,
     name: `Route ${i}`,
     specifier: `Route-${i}`,
-    vehicle_type: "Vehicle ${i}",
+    vehicle_type: `Vehicle ${i}`,
     waypoints,
     driving_behaviour: waypoints[0].driving_behaviour
   };
