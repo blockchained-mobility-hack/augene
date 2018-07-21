@@ -78,19 +78,31 @@ namespace TanglePublisher
                 var proofedRoutes = new List<Model.Route>();
                 foreach (var rawRoute in rawRoutes) {
 
-                    // build the hash
-                    var hash = HashBuilder.ComputeHash(rawRoute);
+                    Model.Route proofedRoute = null;
 
-                    // build new JSON "hashed" based on JSON "raw-data" which includes the hash in addition
-                    var hashedRoute = rawRoute.AddHash(hash);
+                    try {
 
-                    // store it in the tangle
-                    var tangleAddress = _publisher.PublishRouteProof(hashedRoute);
+                        // build the hash
+                        var hash = HashBuilder.ComputeHash(rawRoute);
 
-                    // build new JSON "proofed" based on JSON "hashed" which includes the proof_link
-                    var proofedRoute = hashedRoute.AddProofLink($"https://devnet.thetangle.org/address/{tangleAddress}");
+                        // build new JSON "hashed" based on JSON "raw-data" which includes the hash in addition
+                        var hashedRoute = rawRoute.AddHash(hash);
 
-                    ModelSerializationHelper.SerializeRoute(proofedRoute);
+                        // store it in the tangle
+                        var tangleAddress = _publisher.PublishRouteProof(hashedRoute);
+
+                        // build new JSON "proofed" based on JSON "hashed" which includes the proof_link
+                        proofedRoute = hashedRoute.AddProofLink($"https://devnet.thetangle.org/address/{tangleAddress}");
+
+                        ModelSerializationHelper.SerializeRoute(proofedRoute);
+
+                    }
+                    catch(Exception e) {
+
+                        _logger.LogError($"Tangle operation failed, fallback-scenario: {e.ToString()}");
+                        proofedRoute = ModelSerializationHelper.DeserializeRouteFallback(rawRoute.Data.Specifier);
+
+                    }
 
                     proofedRoutes.Add(proofedRoute);
 
