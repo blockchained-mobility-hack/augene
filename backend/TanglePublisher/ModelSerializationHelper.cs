@@ -18,14 +18,28 @@ namespace TanglePublisher {
 
         }
 
-        public static void SerializeRoute(Route routes, string filename = null) {
+        public static Route DeserializeRouteFallback(string specifier) {
 
-            if (filename == null) {
-                filename = $"SampleRoutes/Output/Route_{DateTimeOffset.Now:HHmmss.ffff}.json";
+            return DeserializeRoute($"SampleRoutes/Input_Fallback/Route_{specifier}.json");
+
+        }
+
+        public static Route DeserializeRoute(string filename = "SampleRoutes/Input/Route.json") {
+
+            using (var streamReader = new StreamReader(filename)) {
+                return JsonConvert.DeserializeObject<Route>(streamReader.ReadToEnd());
             }
 
-            using (var streamWriter = new StreamWriter(filename)) {
-                streamWriter.Write(JsonConvert.SerializeObject(routes));
+        }
+
+        public static void SerializeRoute(Route route, string filename = null) {
+
+            if (filename == null) {
+                filename = $"SampleRoutes/Output/Route_{route.Data.Specifier}.json";
+            }
+
+            using (var streamWriter = new StreamWriter(filename, false)) {
+                streamWriter.Write(JsonConvert.SerializeObject(route));
             }
 
         }
@@ -33,10 +47,10 @@ namespace TanglePublisher {
         public static void SerializeRoutes(Route[] routes, string filename = null) {
 
             if(filename == null) {
-                filename = $"SampleRoutes/Output/Routes_{DateTimeOffset.Now:HHmmss.ffff}.json";
+                filename = $"SampleRoutes/Output/Routes.json";
             }
 
-            using (var streamWriter = new StreamWriter(filename)) {
+            using (var streamWriter = new StreamWriter(filename, false)) {
                 streamWriter.Write(JsonConvert.SerializeObject(routes));
             }
 

@@ -19,7 +19,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="SampleRoutes\Output_Fallback\" />
+    <Folder Include="SampleRoutes\Input_Fallback\" />
     <Folder Include="SampleRoutes\Output\" />
   </ItemGroup>
 
