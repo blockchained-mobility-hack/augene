@@ -1,3 +1,10 @@
+
+@import url('https://fonts.googleapis.com/css?family=Work+Sans:500,900');
+
+body {
+  font-family: 'Work Sans', sans-serif;
+}
+
 .App {
   text-align: center;
 }
@@ -39,6 +46,7 @@
   margin-left: 20px;
 }
 
+
 .tooltip:after, .tooltip:before {
   right: 100%;
   top: 50%;
@@ -62,7 +70,6 @@
   border-width: 12px;
   margin-top: -12px;
 }
-
 .metaview {
   position: absolute;
 
@@ -137,11 +144,51 @@
 }
 
 
-
 .metaview .container .closebutton:hover {
-  
    background-color: rgb(240, 240, 240);
    color: black;
    cursor: pointer;
+}
 
+.publish-page {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.button:hover {
+  cursor: pointer;
+}
+
+.publish-page .button {
+  background-color: springgreen;
+  width: 500px;
+  height: 300px;
+  display: flex;
+  font-size: 100px;
+  font-weight: 900;
+  align-items: center;
+  justify-content: center;
+}
+
+.publish-page .button:hover {
+  background-color: black;
+  color: white;
+}
+
+.publish-page .stat {
+  display: flex;
+  width: 500px;
+  font-size: 40px;
+  justify-content: space-between;
+}
+
+.publish-page .stat:first-child {
+  flex: 2;
+}
+
+.publish-page .stat:first-child {
+  flex: 1;
 }
