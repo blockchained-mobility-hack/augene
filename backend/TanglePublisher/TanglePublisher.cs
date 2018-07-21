@@ -50,6 +50,8 @@ namespace TanglePublisher {
 
                 _logger.LogInformation($"Proof for route {route.Data?.Name} started");
 
+                var start = DateTimeOffset.Now;
+
                 var tangleProofRoute =
                     JsonConvert.SerializeObject(
                         new TangleRouteProof() {
@@ -62,7 +64,7 @@ namespace TanglePublisher {
                         .GetNewAddresses(_seed, 0, 1, SecurityLevel.Medium)
                         .First();
 
-                _logger.LogInformation($"Address for route {route.Data?.Name} generated");
+                _logger.LogInformation($"Address for route {route.Data?.Name} generated. Took {(DateTimeOffset.Now - start).TotalSeconds}");
 
                 var bundle = new Bundle();
                 bundle.AddTransfer(new Transfer {
@@ -79,7 +81,7 @@ namespace TanglePublisher {
 
                 _iotaRepository.SendTrytes(bundle.Transactions);//, 27, 14);
 
-                _logger.LogInformation($"Proof for route {route.Data?.Name} finished");
+                _logger.LogInformation($"Proof for route {route.Data?.Name} finished. Took {(DateTimeOffset.Now - start).TotalSeconds}");
 
                 return address.Value;
 
