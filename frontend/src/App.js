@@ -5,10 +5,16 @@ import { StaticMap } from "react-map-gl";
 import DeckGL, { PathLayer } from "deck.gl";
 import GL from "luma.gl/constants";
 import * as RemoteData from "./remote-data";
+import { BrowserRouter as Router, Route, Link, Switch } from "react-router-dom";
 import "./app.css";
 
-const DATA_URL = {
-  ROUTES: "/mock-data.json"
+const SERVER_ADDRESS = "http://172.27.65.168:5000";
+
+const URLS = {
+  DATA: `/mock-data.json`,
+  TRIGGER_SIMULATION: `${SERVER_ADDRESS}/simulation`,
+  SIMULATION_STATE: `${SERVER_ADDRESS}/state`,
+  ROUTES: `${SERVER_ADDRESS}/routes`
 };
 
 export const INITIAL_VIEW_STATE = {
@@ -22,7 +28,7 @@ export const INITIAL_VIEW_STATE = {
 
 const { REACT_APP_MAPBOX_TOKEN } = process.env;
 
-export default class App extends Component {
+class Map extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -54,7 +60,7 @@ export default class App extends Component {
   };
 
   componentWillMount() {
-    fetch(DATA_URL.ROUTES)
+    fetch(URLS.DATA)
       .then(r => r.json())
       .then(d => this.setState({ remoteData: RemoteData.loaded(d) }))
       .catch(e =>
@@ -118,10 +124,15 @@ export default class App extends Component {
       id: "path-layer",
       pickable: true,
       data,
-      getColor: d => hoverState && hoverState.object.data.name === d.data.name ? [255, 0, 0, 255] : [255, 0, 0, 155],
-      getWidth: d => hoverState && hoverState.object.data.name === d.data.name ? 1000 : 200,
+      getColor: d =>
+        hoverState && hoverState.object.data.name === d.data.name
+          ? [255, 0, 0, 255]
+          : [255, 0, 0, 155],
+      getWidth: d =>
+        hoverState && hoverState.object.data.name === d.data.name ? 1000 : 200,
       widthMinPixels: 2,
-      getPath: ({ data: route }) => route.waypoints.map(wp => [wp.longitude, wp.latitude]),
+      getPath: ({ data: route }) =>
+        route.waypoints.map(wp => [wp.longitude, wp.latitude]),
       onHover: this.onHover,
       onClick: this.onClickHandler,
       updateTriggers: {
@@ -167,6 +178,106 @@ export default class App extends Component {
       case RemoteData.LOADED:
         return this.renderData(remoteData.value);
     }
+  }
+}
+
+const mockFetch = url => {
+  switch (url) {
+    case "/state": {
+      return Promise.resolve({
+        routes: 20,
+        available_route_proofs: 7
+      });
+    }
+  }
+};
+
+class Publish extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      // hasTriggeredSimulation: false,
+      hasTriggeredSimulation: false,
+      // simulationState: null,
+      simulationState: null
+    };
+  }
+  
+  triggerSimulation = () => {
+    console.log("tigerring");
+    fetch(URLS.TRIGGER_SIMULATION, {
+      method: "POST",
+      mode: "cors"
+    }).then(() => this.setState({
+      hasTriggeredSimulation: true
+    })).catch(e => {
+      console.log(e);
+    });
+  }
+
+  fetchSimulationState = () => {
+    fetch(URLS.SIMULATION_STATE)
+      .then(res => res.json())
+      .then(state => {
+        this.setState({
+          simulationState: state
+        });
+      })
+      .catch(e => {
+        // console.log(e);
+      });
+  };
+
+  componentDidMount() {
+    this.fetchSimulationState();
+    this.polling = setInterval(this.fetchSimulationState, 5000);
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.polling);
+  }
+
+  render() {
+    if (!this.state.simulationState) {
+      return <div>Loading...</div>;
+    }
+
+    if(!this.state.hasTriggeredSimulation){
+      return (
+      <div className="publish-page">
+        <div className="button" onClick={this.triggerSimulation}>
+            DO IT
+        </div>
+      </div>
+      )
+    }
+    return (
+      <div className="publish-page">
+        <div className="stats">
+          <div className="stat">
+            <div>Total Routes:</div>
+            <div>{this.state.simulationState.routes}</div>
+          </div>
+          <div className="stat">
+            <div>Available Proofs:</div>
+            <div>{this.state.simulationState.available_route_proofs}</div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+}
+
+export default class App extends Component {
+  render() {
+    return (
+      <Router>
+        <Switch>
+          <Route exact path="/" component={Map} />
+          <Route path="/publish" component={Publish} />
+        </Switch>
+      </Router>
+    );
   }
 }
 
