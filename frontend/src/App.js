@@ -202,7 +202,8 @@ class Map extends Component {
       const { x, y, object } = this.state.hoverState;
       return (
         <div className="tooltip" style={{ left: x, top: y }}>
-          {object.data.name}
+          <div>{object.data.name}</div>
+          <div>Consumption percentage <b>{object.data.consumption_percentage}</b></div>
         </div>
       );
     }
