@@ -19,7 +19,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="SampleRoutes\Input_Fallback\" />
     <Folder Include="SampleRoutes\Output\" />
   </ItemGroup>
 

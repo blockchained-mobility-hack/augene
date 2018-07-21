@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Cors;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -9,6 +10,7 @@ namespace TanglePublisher.Controllers
     [Route("/")]
     [Produces("application/json")]
     [Consumes("application/json")]
+    [EnableCors("CorsPolicy")]
     public class ApiController : Controller
     {
 
