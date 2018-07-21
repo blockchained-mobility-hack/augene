@@ -12,12 +12,12 @@ const DATA_URL = {
 };
 
 export const INITIAL_VIEW_STATE = {
-  latitude: 48.7665,
-  longitude: 11.4258,
-  zoom: 8,
+  latitude: 51.1657,
+  longitude: 10.4515,
+  zoom: 6,
   maxZoom: 16,
   pitch: 50,
-  bearing: 20
+  bearing: 0
 };
 
 const { REACT_APP_MAPBOX_TOKEN } = process.env;
@@ -142,7 +142,6 @@ export default class App extends Component {
       getWidth: d => hoverState && hoverState.object.data.name === d.data.name ? 1000 : 200,
       widthMinPixels: 2,
       getPath: ({ data: route }) => route.waypoints.map(wp => [wp.longitude, wp.latitude]),
-      getColor: d => [255, 0, 0, 255],
       onHover: this.onHover,
       onClick: this.onClickHandler,
       updateTriggers: {
