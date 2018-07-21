@@ -2,17 +2,17 @@ import React, { Component } from "react";
 import { render } from "react-dom";
 
 import { StaticMap } from "react-map-gl";
-import DeckGL, { PathLayer } from "deck.gl";
+import DeckGL, { PathLayer, IconLayer } from "deck.gl";
 import GL from "luma.gl/constants";
 import * as RemoteData from "./remote-data";
 import { BrowserRouter as Router, Route, Link, Switch } from "react-router-dom";
 import "./app.css";
 import { Easing, Tween, autoPlay } from "es6-tween";
 
-
-const SERVER_ADDRESS = "http://172.27.65.168:5000";
+const SERVER_ADDRESS = "http://178.128.206.215:5000";
 
 const URLS = {
+  // DATA: `${SERVER_ADDRESS}/routes`,
   DATA: `/mock-data.json`,
   TRIGGER_SIMULATION: `${SERVER_ADDRESS}/simulation`,
   SIMULATION_STATE: `${SERVER_ADDRESS}/state`,
@@ -233,9 +233,36 @@ class Map extends Component {
         }
       }
     });
+
+    const iconLayer = new IconLayer({
+      id: "icon-layer",
+      data,
+      iconAtlas: "/icon-atlas.png",
+      pickable: true,
+      iconMapping: {
+        marker: {
+          x: 0,
+          y: 0,
+          width: 128,
+          height: 128,
+          anchorY: 128,
+          mask: true
+        }
+      },
+      sizeScale: 10,
+      getPosition: ({data: route}) => {
+        const last = route.waypoints[route.waypoints.length - 1];
+        console.log(last);
+        return [last.longitude, last.latitude]
+      },
+      getIcon: d => "marker",
+      getSize: d => 5,
+      getColor: d => [255, 0, 0, 255]
+    });
+
     return (
       <DeckGL
-        layers={pathLayer}
+        layers={[pathLayer, iconLayer]}
         initialViewState={INITIAL_VIEW_STATE}
         viewState={viewState}
         controller={true}
