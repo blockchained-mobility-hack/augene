@@ -15,16 +15,16 @@ namespace TanglePublisher.Model
         public decimal Latitude { get; set; }
 
         [JsonProperty("elevation")]
-        public int Elevation { get; set; }
+        public decimal Elevation { get; set; }
 
         [JsonProperty("battery_state_of_charge")]
-        public int BatteryStateOfCharge { get; set; }
+        public decimal BatteryStateOfCharge { get; set; }
 
         [JsonProperty("outside_temp")]
-        public int OutsideTemp { get; set; }
+        public decimal OutsideTemp { get; set; }
 
         [JsonProperty("driving_behavior")]
-        public int DrivingBehavior { get; set; }
+        public decimal DrivingBehavior { get; set; }
 
     }
 }
