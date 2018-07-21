@@ -12,8 +12,8 @@ import { Easing, Tween, autoPlay } from "es6-tween";
 const SERVER_ADDRESS = "http://178.128.206.215:5000";
 
 const URLS = {
-  // DATA: `${SERVER_ADDRESS}/routes`,
-  DATA: `/mock-data.json`,
+  DATA: `${SERVER_ADDRESS}/routes`,
+  // DATA: `/mock-data.json`,
   TRIGGER_SIMULATION: `${SERVER_ADDRESS}/simulation`,
   SIMULATION_STATE: `${SERVER_ADDRESS}/state`,
   ROUTES: `${SERVER_ADDRESS}/routes`
@@ -29,6 +29,20 @@ export const INITIAL_VIEW_STATE = {
 };
 
 const { REACT_APP_MAPBOX_TOKEN } = process.env;
+
+const getBatteryCharge = (d) => {
+  return d.data.waypoints[d.data.waypoints.length - 1].battery_state_of_charge;
+}
+
+const getColorForBatteryCharge = (ch) => {
+  if(ch < 0) {
+    return [220, 0, 80, 255]
+  } else if(ch < 10) {
+    return [255, 165, 0, 255]
+  } else {
+    return [80, 220, 100, 255]
+  }
+}
 
 class Map extends Component {
   constructor(props) {
@@ -209,18 +223,23 @@ class Map extends Component {
     }
     return null;
   };
+  
+
 
   renderData = data => {
     const { viewState } = this.state;
     const { hoverState } = this.state;
+    // consol.elog
+    console.log(data.map(getBatteryCharge));
     const pathLayer = new PathLayer({
       id: "path-layer",
       pickable: true,
       data,
-      getColor: d =>
-        hoverState && hoverState.object.data.name === d.data.name
-          ? [255, 0, 0, 255]
-          : [255, 0, 0, 155],
+      getColor: d => {
+        const [r, g, b] = getColorForBatteryCharge(d);
+        const a = hoverState && hoverState.object.data.name === d.data.name ? 255 : 150;
+        return [r, g, b, a];
+      },
       getWidth: d =>
         hoverState && hoverState.object.data.name === d.data.name ? 1000 : 200,
       widthMinPixels: 2,
@@ -261,7 +280,7 @@ class Map extends Component {
       },
       getIcon: d => "marker",
       getSize: d => 5,
-      getColor: d => [255, 0, 0, 255]
+      getColor:  getColorForBatteryCharge
     });
 
     return (
