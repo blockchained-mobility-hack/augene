@@ -5,7 +5,7 @@
             "to": "Aachen",
             "name": "Route 0",
             "specifier": "Route-0",
-            "vehicle_type": "Vehicle ${i}",
+            "vehicle_type": "Vehicle 0",
             "waypoints": [
                 {
                     "latitude": 51.4935304,
@@ -9818,7 +9818,7 @@
             "to": "Cologne",
             "name": "Route 1",
             "specifier": "Route-1",
-            "vehicle_type": "Vehicle ${i}",
+            "vehicle_type": "Vehicle 1",
             "waypoints": [
                 {
                     "latitude": 50.0314473,
@@ -20071,7 +20071,7 @@
             "to": "Hamburg",
             "name": "Route 2",
             "specifier": "Route-2",
-            "vehicle_type": "Vehicle ${i}",
+            "vehicle_type": "Vehicle 2",
             "waypoints": [
                 {
                     "latitude": 52.3271947,
@@ -26788,7 +26788,7 @@
             "to": "Nuernberg",
             "name": "Route 3",
             "specifier": "Route-3",
-            "vehicle_type": "Vehicle ${i}",
+            "vehicle_type": "Vehicle 3",
             "waypoints": [
                 {
                     "latitude": 48.2137855,
@@ -33521,7 +33521,7 @@
             "to": "Wuerzburg",
             "name": "Route 4",
             "specifier": "Route-4",
-            "vehicle_type": "Vehicle ${i}",
+            "vehicle_type": "Vehicle 4",
             "waypoints": [
                 {
                     "latitude": 49.5998204,
@@ -39158,7 +39158,7 @@
             "to": "Leipzig",
             "name": "Route 5",
             "specifier": "Route-5",
-            "vehicle_type": "Vehicle ${i}",
+            "vehicle_type": "Vehicle 5",
             "waypoints": [
                 {
                     "latitude": 52.4039374,
@@ -45715,7 +45715,7 @@
             "to": "Freiburg",
             "name": "Route 6",
             "specifier": "Route-6",
-            "vehicle_type": "Vehicle ${i}",
+            "vehicle_type": "Vehicle 6",
             "waypoints": [
                 {
                     "latitude": 48.7792546,
