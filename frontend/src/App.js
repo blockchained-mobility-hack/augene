@@ -84,7 +84,7 @@ class Map extends Component {
   _animateIn = ({ object }) => {
     var that = this;
 
-    var halfway = Math.floor(object.data.waypoints.length / 2);
+    var halfway = Math.round(object.data.waypoints.length / 2);
     let tween = new Tween(this.state.viewState)
       .to(
         {
@@ -188,10 +188,6 @@ class Map extends Component {
               </div>
             </div>
           )}
-          <br />
-          <div>
-            Hash <a href="#">#1234092385091834590-13458</a>
-          </div>
         </div>
       </div>
     );
@@ -284,6 +280,10 @@ class Map extends Component {
         />
         {this.renderTooltip}
         {this.renderMetaView}
+        <div className="banner">
+            <div>AuGeNe Explore &nbsp;&nbsp;&nbsp; Overcome your range anxiety 🏁</div>
+            <div>Powered by IOTA Tangle</div>
+        </div>
       </DeckGL>
     );
   };
