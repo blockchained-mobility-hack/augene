@@ -8,37 +8,44 @@ Data schema by example.
 [
 
     {
-        name: "Test-Route-1",
-        from: "Berlin",
-        to: "Munich",
-        vehicle_type: "BMW i3"
-        consumption_percentage: 45,
-        waypoints: [
-            {
-                lon:14.4,
-                lat:16.3,
-                speed: 83,
-                ...
-            }
-        ],
+
+        data: {
+            name: "Test-Route-1",
+            from: "Berlin",
+            to: "Munich",
+            vehicle_type: "BMW i3"
+            consumption_percentage: 45,
+            waypoints: [
+                {
+                    lon:14.4,
+                    lat:16.3,
+                    speed: 83,
+                    ...
+                }
+            ]
+        },
+        hash: "",
         proof_link: "https://thetangle.org/..."
 
     },
 
     {
-        name: "Test-Route-2",
-        from: "Berlin",
-        to: "Munich",
-        vehicle_type: "BMW i3"
-        consumption_percentage: 45,
-        waypoints: [
-            {
-                lon:14.4,
-                lat:16.3,
-                speed: 83,
-                ...
-            }
-        ],
+        data: {
+            name: "Test-Route-2",
+            from: "Berlin",
+            to: "Munich",
+            vehicle_type: "BMW i3"
+            consumption_percentage: 45,
+            waypoints: [
+                {
+                    lon:14.4,
+                    lat:16.3,
+                    speed: 83,
+                    ...
+                }
+            ]
+        },
+        hash: "",
         proof_link: "https://thetangle.org/..."
 
     },
