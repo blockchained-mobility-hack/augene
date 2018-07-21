@@ -20,7 +20,8 @@ Data schema by example.
                 speed: 83,
                 ...
             }
-        ]
+        ],
+        proof_link: "https://thetangle.org/..."
 
     },
 
@@ -37,7 +38,8 @@ Data schema by example.
                 speed: 83,
                 ...
             }
-        ]
+        ],
+        proof_link: "https://thetangle.org/..."
 
     },
 
@@ -69,7 +71,9 @@ Data schema by example.
                 ]
             },
             ...
-        ]
+        ],
+
+        proof_link: "https://thetangle.org/..."
 
     },
 
@@ -93,7 +97,9 @@ Data schema by example.
                 ]
             },
             ...
-        ]
+        ],
+
+        proof_link: "https://thetangle.org/..."
 
     },
 
