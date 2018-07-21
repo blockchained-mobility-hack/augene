@@ -1,7 +1,7 @@
 [
     {
         "data": {
-            "name": "Test-Route-0.30649775112611866",
+            "name": "Test-Route-0.3093292144263764",
             "from": "Berlin",
             "to": "Munich",
             "vehicle_type": "BMW i3",
@@ -10254,7 +10254,7 @@
     },
     {
         "data": {
-            "name": "Test-Route-0.29690525984948146",
+            "name": "Test-Route-0.3060780910604852",
             "from": "Berlin",
             "to": "Munich",
             "vehicle_type": "BMW i3",
@@ -16971,7 +16971,7 @@
     },
     {
         "data": {
-            "name": "Test-Route-0.6402828458878647",
+            "name": "Test-Route-0.4577629144948072",
             "from": "Berlin",
             "to": "Munich",
             "vehicle_type": "BMW i3",
