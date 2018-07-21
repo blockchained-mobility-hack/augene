@@ -26,3 +26,10 @@
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
 }
+
+.tooltip {
+  position: fixed;
+  background-color: red;
+  padding:20px;
+  z-index: 1000;
+}

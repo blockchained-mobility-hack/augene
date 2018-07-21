@@ -5,6 +5,7 @@ import { StaticMap } from "react-map-gl";
 import DeckGL, { LineLayer, GeoJsonLayer } from "deck.gl";
 import GL from "luma.gl/constants";
 import * as RemoteData from "./remote-data";
+import './app.css';
 
 const DATA_URL = {
   ROUTE: "/route.geo.json"
@@ -22,52 +23,91 @@ export const INITIAL_VIEW_STATE = {
 
 const { REACT_APP_MAPBOX_TOKEN } = process.env
 
+
+var dataDemo = [
+      {
+        inbound: 72633,
+        outbound: 74735,
+        from: {
+          name: '19th St. Oakland (19TH)',
+          coordinates: [11.62095, 48.21061]
+        },
+        to: {
+          name: '12th St. Oakland City Center (12TH)',
+          coordinates: [11.62095, 48.41061]
+       },
+     }
+    ];
+
 export default class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      remoteData: RemoteData.loading()
+      remoteData: RemoteData.loading(),
+      hoveredObject: null
     };
   }
 
   componentWillMount() {
-    fetch("/route.geo.json")
+    fetch("/mock-data.json")
       .then(r => r.json())
       .then(d => this.setState({ remoteData: RemoteData.loaded(d) }))
       .catch(e => this.setState({remoteData: RemoteData.error(`Error Loading Data: ${e}`)}))
     ;
   }
+
+  _onHover = ({x, y, object}) => {
+    
+     this.setState({hoveredObject: {x, y, object}});
+  }
+
+  _renderTooltip = () => {
+    if(this.state.hoveredObject){
+          const { x, y, object } = this.state.hoveredObject;
+console.log(x, y);
+          return (
+                <div className="tooltip" style={{left: x, top: y}}>
+                  <div>testtestset</div>
+                </div>
+          )
+    }
+    return null;
+  }
   
   renderData = (data) => {
     const { viewState } = this.props;
+
+    //console.log(data);
     const layers = [
-      // new LineLayer({
-      //   id: "flight-paths",
-      //   data: flightPaths,
-      //   strokeWidth,
-      //   fp64: false,
-      //   getSourcePosition: d => d.start,
-      //   getTargetPosition: d => d.end,
-      //   getColor,
-      //   pickable: true,
-      //   onHover: this._onHover
-      // })
-      new GeoJsonLayer({
-        id: "geojson-layer",
-        data,
+      new LineLayer({
+        id: 'line-layer',
+        data: dataDemo,
         pickable: true,
-        stroked: false,
-        filled: true,
-        extruded: true,
-        lineWidthScale: 20,
-        lineWidthMinPixels: 2,
-        getFillColor: d => [255, 0, 0, 255],
-        getLineColor: d => [255, 0, 0, 255],
-        getRadius: 100,
-        getLineWidth: 1,
-        getElevation: 30
-        // onHover: ({object}) => setTooltip(object.properties.name || object.properties.station)
+        getStrokeWidth: 12,
+        getSourcePosition: d => {
+          console.log(d);
+          return d.from.coordinates
+        } ,
+        getTargetPosition: d => d.to.coordinates,
+        getColor: d => [Math.sqrt(d.inbound + d.outbound), 140, 0],
+        onHover: this._onHover
       })
+      // new GeoJsonLayer({
+      //   id: "geojson-layer",
+      //   data,
+      //   pickable: true,
+      //   stroked: false,
+      //   filled: true,
+      //   extruded: true,
+      //   lineWidthScale: 20,
+      //   lineWidthMinPixels: 2,
+      //   getFillColor: d => [255, 0, 0, 255],
+      //   getLineColor: d => [255, 0, 0, 255],
+      //   getRadius: 100,
+      //   getLineWidth: 1,
+      //   getElevation: 30
+      //   // onHover: ({object}) => setTooltip(object.properties.name || object.properties.station)
+      // })
     ];
 
     return (
@@ -88,7 +128,9 @@ export default class App extends Component {
           preventStyleDiffing={true}
           mapboxApiAccessToken={REACT_APP_MAPBOX_TOKEN}
         />
+       {this._renderTooltip}
       </DeckGL>
+
     );
   }
 
