@@ -8,14 +8,23 @@ namespace TanglePublisher.Model
     public class Waypoint
     {
 
-        [JsonProperty("lon")]
-        public decimal Lon { get; set; }
+        [JsonProperty("longitude")]
+        public decimal Longitude { get; set; }
 
-        [JsonProperty("lat")]
-        public decimal Lat { get; set; }
+        [JsonProperty("latitude")]
+        public decimal Latitude { get; set; }
 
-        [JsonProperty("speed")]
-        public int Speed { get; set; }
+        [JsonProperty("elevation")]
+        public decimal Elevation { get; set; }
+
+        [JsonProperty("battery_state_of_charge")]
+        public decimal BatteryStateOfCharge { get; set; }
+
+        [JsonProperty("outside_temp")]
+        public decimal OutsideTemp { get; set; }
+
+        [JsonProperty("driving_behavior")]
+        public decimal DrivingBehavior { get; set; }
 
     }
 }

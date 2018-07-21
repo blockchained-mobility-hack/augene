@@ -192,3 +192,21 @@ body {
 .publish-page .stat:first-child {
   flex: 1;
 }
+
+.banner { 
+  position: fixed;
+  z-index: 1000;
+  width: 100%;
+ 
+  background-color: white;
+  bottom: 0px;
+  display: flex;
+ }
+
+.banner div {
+  flex: 1;
+   padding:20px;
+}
+.banner div:nth-child(2) {
+  text-align: right;
+}
