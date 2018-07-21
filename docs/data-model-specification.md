@@ -2,7 +2,7 @@
 
 Data schema by example.
 
-## Verion 1
+## Version 1
 
 ```
 [
