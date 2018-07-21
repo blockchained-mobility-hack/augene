@@ -26,6 +26,9 @@ namespace TanglePublisher.Model
         [JsonProperty("consumption_percentage")]
         public int ConsumptionPercentage { get; set; }
 
+        [JsonProperty("recording_date")]
+        public int RecordingDate { get; set; }
+
         [JsonProperty("waypoints")]
         public Waypoint[] Waypoints { get; set; }
 
