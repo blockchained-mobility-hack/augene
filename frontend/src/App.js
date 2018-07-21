@@ -7,6 +7,7 @@ import GL from "luma.gl/constants";
 import * as RemoteData from "./remote-data";
 import { BrowserRouter as Router, Route, Link, Switch } from "react-router-dom";
 import "./app.css";
+import { Easing, Tween, autoPlay } from "es6-tween";
 
 const SERVER_ADDRESS = "http://172.27.65.168:5000";
 
@@ -18,7 +19,7 @@ const URLS = {
 };
 
 export const INITIAL_VIEW_STATE = {
-  latitude: 51.1657,
+  latitude: 50.1657,
   longitude: 10.4515,
   zoom: 6,
   maxZoom: 16,
@@ -38,25 +39,21 @@ class Map extends Component {
       viewState: INITIAL_VIEW_STATE
     };
     var t = setInterval(this._updateView, 10);
-    // console.log(props);
+
+    autoPlay(true);
   }
 
   _updateView = () => {
+    if (this.state.clickState != null) {
+      const newViewState = {
+        ...this.state.viewState,
+        bearing: this.state.viewState.bearing + 0.05
+      };
 
-    // if(this.state.clickState == null) { 
-    // this.setState({
-    //   viewState: {
-    //     latitude: 48.7665,
-    //     longitude: 11.4258,
-    //     zoom: 8,
-    //     maxZoom: 16,
-    //     pitch: 20,
-    //     bearing: this.state.viewState.bearing + 0.01
-    //   }
-    // });
-    // }
-
-
+      this.setState({
+        viewState: newViewState
+      });
+    }
   };
 
   componentWillMount() {
@@ -79,31 +76,125 @@ class Map extends Component {
   };
 
   onClickHandler = ({ x, y, object }) => {
-    this.setState({ clickState: { x, y, object }} );
+    this.setState({ clickState: { x, y, object } });
+    this._animateIn({ object });
+  };
+
+  _animateIn = ({ object }) => {
+    var that = this;
+
+    var halfway = object.data.waypoints.length / 2;
+    let tween = new Tween(this.state.viewState)
+      .to(
+        {
+          latitude: object.data.waypoints[halfway].latitude,
+          longitude: object.data.waypoints[halfway].longitude,
+          zoom: 8,
+          pitch: 50,
+          bearing: 20
+        },
+        2000
+      )
+      .on("update", ({ latitude, longitude, zoom, pitch, bearing }) => {
+        that.setState({
+          viewState: {
+            latitude: latitude,
+            longitude: longitude,
+            zoom: zoom,
+            maxZoom: 16,
+            pitch: pitch,
+            bearing: bearing
+          }
+        });
+      })
+      .start();
+  };
+
+  _animateOut = () => {
+    var that = this;
+    let tween2 = new Tween(that.state.viewState)
+      .to(
+        {
+          latitude: 50.1657,
+          longitude: 10.4515,
+          zoom: 6,
+          pitch: 50,
+          bearing: 0
+        },
+        2000
+      )
+      .on("update", ({ latitude, longitude, zoom, pitch, bearing }) => {
+        that.setState({
+          viewState: {
+            latitude: latitude,
+            longitude: longitude,
+            zoom: zoom,
+            maxZoom: 16,
+            pitch: pitch,
+            bearing: bearing
+          }
+        });
+      })
+      .start();
   };
 
   closeMetaView = () => {
-       this.setState({ clickState: null } );
+    this.setState({ clickState: null });
+
+    // this.setState({
+    //  viewState: INITIAL_VIEW_STATE
+    // });
+    this._animateOut();
   };
 
   renderMetaView = () => {
-
     var classed = "metaview";
-    if(this.state.clickState != null) {
+    if (this.state.clickState != null) {
       classed = "metaview active";
     }
-
     return (
-        <div className={classed}>
-          <div className="container">
-            <div className="closebutton" onClick={this.closeMetaView}>Close</div>
-            <div>This is a demo</div>
-            <br/>
-            <div>Hash <a href="#">#1234092385091834590-13458</a></div>
+      <div className={classed}>
+        <div className="container">
+          <div className="closebutton" onClick={this.closeMetaView}>
+            Close
+          </div>
+          {this.state.clickState != null && (
+            <div>
+              <div>Name : {this.state.clickState.object.data.name}</div>
+              <div>From : {this.state.clickState.object.data.from}</div>
+              <div>To : {this.state.clickState.object.data.to}</div>
+              <div>
+                Hash :{" "}
+                <a href={this.state.clickState.object.data.hash}>
+                  {this.state.clickState.object.data.hash}
+                </a>
+              </div>
+              <div>
+                Proof :{" "}
+                <a href={this.state.clickState.object.data.proof_link}>
+                  {this.state.clickState.object.data.proof_link}
+                </a>
+              </div>
+              <div>
+                Consumption percentage :{" "}
+                {this.state.clickState.object.data.consumption_percentage}
+              </div>
+              <div>
+                Vehicle type : {this.state.clickState.object.data.vehicle_type}
+              </div>
+              <div>
+                waypoints : {this.state.clickState.object.data.waypoints.length}
+              </div>
+            </div>
+          )}
+          <br />
+          <div>
+            Hash <a href="#">#1234092385091834590-13458</a>
           </div>
         </div>
-      );
-  } 
+      </div>
+    );
+  };
 
   renderTooltip = () => {
     if (this.state.hoverState) {
@@ -202,18 +293,22 @@ class Publish extends Component {
       simulationState: null
     };
   }
-  
+
   triggerSimulation = () => {
     console.log("tigerring");
     fetch(URLS.TRIGGER_SIMULATION, {
       method: "POST",
       mode: "cors"
-    }).then(() => this.setState({
-      hasTriggeredSimulation: true
-    })).catch(e => {
-      console.log(e);
-    });
-  }
+    })
+      .then(() =>
+        this.setState({
+          hasTriggeredSimulation: true
+        })
+      )
+      .catch(e => {
+        console.log(e);
+      });
+  };
 
   fetchSimulationState = () => {
     fetch(URLS.SIMULATION_STATE)
@@ -242,14 +337,14 @@ class Publish extends Component {
       return <div>Loading...</div>;
     }
 
-    if(!this.state.hasTriggeredSimulation){
+    if (!this.state.hasTriggeredSimulation) {
       return (
-      <div className="publish-page">
-        <div className="button" onClick={this.triggerSimulation}>
+        <div className="publish-page">
+          <div className="button" onClick={this.triggerSimulation}>
             DO IT
+          </div>
         </div>
-      </div>
-      )
+      );
     }
     return (
       <div className="publish-page">

@@ -2368,6 +2368,10 @@ es6-symbol@3.1.1, es6-symbol@^3.1.1, es6-symbol@~3.1.1:
     d "1"
     es5-ext "~0.10.14"
 
+es6-tween@^5.3.0:
+  version "5.3.0"
+  resolved "https://registry.yarnpkg.com/es6-tween/-/es6-tween-5.3.0.tgz#a77e7314b46380bdd30b7e38c6937978c72b3f11"
+
 es6-weak-map@^2.0.1:
   version "2.0.2"
   resolved "https://registry.yarnpkg.com/es6-weak-map/-/es6-weak-map-2.0.2.tgz#5e3ab32251ffd1538a1f8e5ffa1357772f92d96f"
@@ -7184,6 +7188,10 @@ tunnel-agent@^0.6.0:
   resolved "https://registry.yarnpkg.com/tunnel-agent/-/tunnel-agent-0.6.0.tgz#27a5dea06b36b04a0a9966774b290868f0fc40fd"
   dependencies:
     safe-buffer "^5.0.1"
+
+tweenjs@^1.0.2:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/tweenjs/-/tweenjs-1.0.2.tgz#768869c4d4ba91fdb4c5ccc661969c58138555af"
 
 tweetnacl@^0.14.3, tweetnacl@~0.14.0:
   version "0.14.5"

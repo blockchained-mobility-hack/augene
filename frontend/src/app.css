@@ -57,6 +57,11 @@ body {
   pointer-events: none;
   top:20px;
 
+  /*-webkit-transition-delay: 2500ms;
+    -moz-transition-delay: 2500ms;
+    -o-transition-delay: 2500ms;
+    transition-delay: 2500ms;*/
+
     -webkit-transition: opacity 200ms ease-in-out, top 200ms ease-in-out;
   -moz-transition: opacity 200ms ease-in-out, top 200ms ease-in-out;
   -ms-transition: opacity 200ms ease-in-out, top 200ms ease-in-out;
