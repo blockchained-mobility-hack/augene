@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { render } from "react-dom";
 
 import { StaticMap } from "react-map-gl";
-import DeckGL, { LineLayer, GeoJsonLayer } from "deck.gl";
+import DeckGL, { PathLayer } from "deck.gl";
 import GL from "luma.gl/constants";
 import * as RemoteData from "./remote-data";
 import "./app.css";
@@ -17,33 +17,10 @@ export const INITIAL_VIEW_STATE = {
   zoom: 8,
   maxZoom: 16,
   pitch: 50,
-  bearing: 0
+  bearing: 20
 };
 
 const { REACT_APP_MAPBOX_TOKEN } = process.env;
-
-const buildLineSegments = routes => {
-  return routes.map(route => {
-    const { data } = route;
-    const { waypoints } = data;
-    const segments = waypoints
-      .slice(0, waypoints.length - 1)
-      .map((start, i) => {
-        const end = waypoints[i + 1];
-        return {
-          start: [start.longitude, start.latitude],
-          end: [end.longitude, end.latitude]
-        };
-      });
-    return {
-      ...route,
-      data: {
-        ...data,
-        segments
-      }
-    };
-  });
-};
 
 var dataDemo = [
   {
@@ -60,21 +37,39 @@ var dataDemo = [
   }
 ];
 
+// const formatData = (data) => {
+//   console.log("formatData:",data);
+// }
+
 export default class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
       remoteData: RemoteData.loading(),
-      hoveredObject: null
+      hoverState: null,
+      viewState: INITIAL_VIEW_STATE
     };
+    // var t = setInterval(this._updateView, 10);
+    // console.log(props);
   }
+
+  _updateView = () => {
+    this.setState({
+      viewState: {
+        latitude: 48.7665,
+        longitude: 11.4258,
+        zoom: 8,
+        maxZoom: 16,
+        pitch: 50,
+        bearing: this.state.viewState.bearing + 0.1
+      }
+    });
+  };
 
   componentWillMount() {
     fetch(DATA_URL.ROUTES)
       .then(r => r.json())
-      .then(d =>
-        this.setState({ remoteData: RemoteData.loaded(buildLineSegments(d)) })
-      )
+      .then(d => this.setState({ remoteData: RemoteData.loaded(d) }))
       .catch(e =>
         this.setState({
           remoteData: RemoteData.error(`Error Loading Data: ${e}`)
@@ -83,43 +78,51 @@ export default class App extends Component {
   }
 
   onHover = ({ x, y, object }) => {
-    this.setState({ hoveredObject: { x, y, object } });
+    // console.log("hovered object", object);
+    if (object == undefined) {
+      this.setState({ hoverState: null });
+    } else {
+      this.setState({ hoverState: { x, y, object } });
+    }
   };
 
   renderTooltip = () => {
-    if (this.state.hoveredObject) {
-      const { x, y, object } = this.state.hoveredObject;
-      console.log(x, y);
+    if (this.state.hoverState) {
+      const { x, y, object } = this.state.hoverState;
       return (
         <div className="tooltip" style={{ left: x, top: y }}>
-          <div>testtestset</div>
+          {object.data.name}
         </div>
       );
     }
     return null;
   };
 
-
   renderData = data => {
     const { viewState } = this.props;
-    const lineLayers = data.map(({ data: d }) => {
-      console.log(d);
-      console.log(d.segments);
-      return new LineLayer({
-        id: d.name,
-        pickable: true,
-        data: d.segments,
-        getSourcePosition: d => d.start,
-        getTargetPosition: d => d.end,
-        strokeWidth: 5,
-        getColor: d => [255, 0, 0, 255],
-        onHover: this.onHover
-      });
+    const { hoverState } = this.state;
+    const pathLayer = new PathLayer({
+      id: "path-layer",
+      pickable: true,
+      data,
+      getColor: d => hoverState && hoverState.object.data.name === d.data.name ? [255, 0, 0, 255] : [255, 0, 0, 155],
+      getWidth: d => hoverState && hoverState.object.data.name === d.data.name ? 1000 : 200,
+      widthMinPixels: 2,
+      getPath: ({ data: route }) => route.waypoints.map(wp => [wp.longitude, wp.latitude]),
+      getColor: d => [255, 0, 0, 255],
+      onHover: this.onHover,
+      updateTriggers: {
+        getColor: {
+          value: this.state.hoverState
+        },
+        getWidth: {
+          value: this.state.hoverState
+        }
+      }
     });
-
     return (
       <DeckGL
-        layers={lineLayers}
+        layers={pathLayer}
         initialViewState={INITIAL_VIEW_STATE}
         viewState={viewState}
         controller={true}

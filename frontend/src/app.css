@@ -32,4 +32,5 @@
   background-color: red;
   padding:20px;
   z-index: 1000;
+  pointer-events: none;
 }
