@@ -2,6 +2,7 @@ const parse = require("csv-parse/lib/sync");
 const fs = require("fs");
 const path = require("path")
 
+path.resolve(__dirname, "..", "..", "frontend", "public");
 
 const table = parse(
   fs.readFileSync(path.resolve(__dirname, "data", "sample-trip.csv"), "utf8")
@@ -31,4 +32,4 @@ const dataTemplate = require("./model/datamodel.json");
 const [trip] = dataTemplate;
 
 trip.data.waypoints = data;
-fs.writeFileSync(path.resolve(outDir, "mock-data.json"), JSON.stringify([trip]));
+fs.writeFileSync(path.resolve(__dirname, "..", "..", "frontend", "public", "mock-data.json"), JSON.stringify([trip]));
