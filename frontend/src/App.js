@@ -22,25 +22,6 @@ export const INITIAL_VIEW_STATE = {
 
 const { REACT_APP_MAPBOX_TOKEN } = process.env;
 
-var dataDemo = [
-  {
-    inbound: 72633,
-    outbound: 74735,
-    from: {
-      name: "19th St. Oakland (19TH)",
-      coordinates: [11.62095, 48.21061]
-    },
-    to: {
-      name: "12th St. Oakland City Center (12TH)",
-      coordinates: [11.62095, 48.41061]
-    }
-  }
-];
-
-// const formatData = (data) => {
-//   console.log("formatData:",data);
-// }
-
 export default class App extends Component {
   constructor(props) {
     super(props);
@@ -78,7 +59,6 @@ export default class App extends Component {
   }
 
   onHover = ({ x, y, object }) => {
-    // console.log("hovered object", object);
     if (object == undefined) {
       this.setState({ hoverState: null });
     } else {
