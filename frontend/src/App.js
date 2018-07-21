@@ -83,7 +83,7 @@ class Map extends Component {
   _animateIn = ({ object }) => {
     var that = this;
 
-    var halfway = object.data.waypoints.length / 2;
+    var halfway = Math.floor(object.data.waypoints.length / 2);
     let tween = new Tween(this.state.viewState)
       .to(
         {
