@@ -47,23 +47,29 @@ export default class App extends Component {
     this.state = {
       remoteData: RemoteData.loading(),
       hoverState: null,
+      clickState: null,
       viewState: INITIAL_VIEW_STATE
     };
-    // var t = setInterval(this._updateView, 10);
+    var t = setInterval(this._updateView, 10);
     // console.log(props);
   }
 
   _updateView = () => {
-    this.setState({
-      viewState: {
-        latitude: 48.7665,
-        longitude: 11.4258,
-        zoom: 8,
-        maxZoom: 16,
-        pitch: 50,
-        bearing: this.state.viewState.bearing + 0.1
-      }
-    });
+
+    // if(this.state.clickState == null) { 
+    // this.setState({
+    //   viewState: {
+    //     latitude: 48.7665,
+    //     longitude: 11.4258,
+    //     zoom: 8,
+    //     maxZoom: 16,
+    //     pitch: 20,
+    //     bearing: this.state.viewState.bearing + 0.01
+    //   }
+    // });
+    // }
+
+
   };
 
   componentWillMount() {
@@ -86,6 +92,33 @@ export default class App extends Component {
     }
   };
 
+  onClickHandler = ({ x, y, object }) => {
+    this.setState({ clickState: { x, y, object }} );
+  };
+
+  closeMetaView = () => {
+       this.setState({ clickState: null } );
+  };
+
+  renderMetaView = () => {
+
+    var classed = "metaview";
+    if(this.state.clickState != null) {
+      classed = "metaview active";
+    }
+
+    return (
+        <div className={classed}>
+          <div className="container">
+            <div className="closebutton" onClick={this.closeMetaView}>Close</div>
+            <div>This is a demo</div>
+            <br/>
+            <div>Hash <a href="#">#1234092385091834590-13458</a></div>
+          </div>
+        </div>
+      );
+  } 
+
   renderTooltip = () => {
     if (this.state.hoverState) {
       const { x, y, object } = this.state.hoverState;
@@ -99,7 +132,7 @@ export default class App extends Component {
   };
 
   renderData = data => {
-    const { viewState } = this.props;
+    const { viewState } = this.state;
     const { hoverState } = this.state;
     const pathLayer = new PathLayer({
       id: "path-layer",
@@ -110,6 +143,7 @@ export default class App extends Component {
       widthMinPixels: 2,
       getPath: ({ data: route }) => route.waypoints.map(wp => [wp.longitude, wp.latitude]),
       onHover: this.onHover,
+      onClick: this.onClickHandler,
       updateTriggers: {
         getColor: {
           value: this.state.hoverState
@@ -138,6 +172,7 @@ export default class App extends Component {
           mapboxApiAccessToken={REACT_APP_MAPBOX_TOKEN}
         />
         {this.renderTooltip}
+        {this.renderMetaView}
       </DeckGL>
     );
   };
