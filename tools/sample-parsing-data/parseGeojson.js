@@ -1,6 +1,6 @@
 var fs = require('fs');
 
-var dataModel = JSON.parse(fs.readFileSync('model/empty.datamodel.js', 'utf8'));
+var dataModel = JSON.parse(fs.readFileSync('model/datamodel.json', 'utf8'));
 var geoJSON = JSON.parse(fs.readFileSync('data/route.geo.json', 'utf8'));
 
 var coordinates = geoJSON.features[0].geometry.coordinates;
