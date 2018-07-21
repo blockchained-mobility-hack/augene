@@ -19,7 +19,7 @@ const data = rows.map((row, acc) => {
     }
     const camelcasedKey = key.toLowerCase().replace(/\s/g, "_");
     return Object.assign(acc, {
-      [camelcasedKey]: value
+      [camelcasedKey]: parseFloat(value)
     });
   }, {});
 });
