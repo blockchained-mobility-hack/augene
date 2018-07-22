@@ -201,16 +201,11 @@ class Map extends Component {
           classedLine = "line green";
           classedBattery = "battery green";
       }
-        console.log(moment);
-        console.log( this.state.clickState.object.data.recording_date);
-      date = moment( this.state.clickState.object.data.recording_date).format("MMM Do YY");
+
+      date = moment.unix(Math.round(this.state.clickState.object.data.recording_date)).format("MMM Do YYYY");
     }
 
     
-
-   
-
-     console.log(this.state.clickState);
     return (
       <div className={classed}>
         <div className="container">
@@ -234,7 +229,7 @@ class Map extends Component {
               <div className="row">
                   <div>From<br /> <span> {this.state.clickState.object.data.from} </span></div>
                   <div className="road">
-                      <div className="linetop">distance : {this.state.clickState.object.data.waypoints.length} km</div>
+                      <div className="linetop">distance : {this.state.clickState.object.data.distance}</div>
                       <div className={classedLine}></div>
                       <div className="linebottom">waypoints : {this.state.clickState.object.data.waypoints.length}</div>
                   </div>
