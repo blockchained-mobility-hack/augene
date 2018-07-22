@@ -30,19 +30,34 @@ export const INITIAL_VIEW_STATE = {
 
 const { REACT_APP_MAPBOX_TOKEN } = process.env;
 
-const getBatteryCharge = (d) => {
+const getBatteryCharge = d => {
   return d.data.waypoints[d.data.waypoints.length - 1].battery_state_of_charge;
-}
+};
 
-const getColorForBatteryCharge = (ch) => {
-  if(ch < 0) {
-    return [220, 0, 80, 255]
-  } else if(ch < 10) {
-    return [255, 165, 0, 255]
+const getColorForBatteryCharge = ch => {
+  if (ch < 0) {
+    return [220, 0, 80, 255];
+  } else if (ch < 10) {
+    return [255, 165, 0, 255];
   } else {
-    return [80, 220, 100, 255]
+    return [80, 220, 100, 255];
   }
-}
+};
+
+const calcConsumptionPct = routes => {
+  return routes.map(route => {
+    const { data } = route;
+    const firstWaypoint = data.waypoints[0];
+    const lastWaypoint = data.waypoints[data.waypoints.length - 1];
+    return {
+      ...route,
+      data: {
+        ...data,
+        consumption_percentage: (firstWaypoint.battery_state_of_charge - lastWaypoint.battery_state_of_charge).toFixed(2)
+      }
+    };
+  });
+};
 
 class Map extends Component {
   constructor(props) {
@@ -74,7 +89,9 @@ class Map extends Component {
   componentWillMount() {
     fetch(URLS.DATA)
       .then(r => r.json())
-      .then(d => this.setState({ remoteData: RemoteData.loaded(d) }))
+      .then(d =>
+        this.setState({ remoteData: RemoteData.loaded(calcConsumptionPct(d)) })
+      )
       .catch(e =>
         this.setState({
           remoteData: RemoteData.error(`Error Loading Data: ${e}`)
@@ -83,7 +100,7 @@ class Map extends Component {
   }
 
   onHover = ({ x, y, object }) => {
-    if (object == undefined) {
+    if (typeof object === "undefined") {
       this.setState({ hoverState: null });
     } else {
       this.setState({ hoverState: { x, y, object } });
@@ -222,27 +239,26 @@ class Map extends Component {
       return (
         <div className="tooltip" style={{ left: x, top: y }}>
           <div>{object.data.name}</div>
-          <div>Consumption percentage <b>{object.data.consumption_percentage}</b></div>
+          <div>
+            Consumption percentage <b>{object.data.consumption_percentage}</b>
+          </div>
         </div>
       );
     }
     return null;
   };
-  
-
 
   renderData = data => {
     const { viewState } = this.state;
     const { hoverState } = this.state;
-    // consol.elog
-   // //console.log(data.map(getBatteryCharge));
     const pathLayer = new PathLayer({
       id: "path-layer",
       pickable: true,
       data,
       getColor: d => {
-        const [r, g, b] = getColorForBatteryCharge(d);
-        const a = hoverState && hoverState.object.data.name === d.data.name ? 255 : 150;
+        const [r, g, b] = getColorForBatteryCharge(getBatteryCharge(d));
+        const a =
+          hoverState && hoverState.object.data.name === d.data.name ? 255 : 150;
         return [r, g, b, a];
       },
       getWidth: d =>
@@ -278,14 +294,14 @@ class Map extends Component {
         }
       },
       sizeScale: 10,
-      getPosition: ({data: route}) => {
+      getPosition: ({ data: route }) => {
         const last = route.waypoints[route.waypoints.length - 1];
-        //console.log(last);
         return [last.longitude, last.latitude]
+
       },
       getIcon: d => "marker",
       getSize: d => 5,
-      getColor:  getColorForBatteryCharge
+      getColor: d => getColorForBatteryCharge(getBatteryCharge(d))
     });
 
     return (
@@ -309,8 +325,10 @@ class Map extends Component {
         {this.renderTooltip}
         {this.renderMetaView}
         <div className="banner">
-            <div>AuGeNe <u><a target="_blank" href="https://github.com/blockchained-mobility-hack/augene">Proof of reach</a></u> &nbsp;&nbsp;&nbsp; Overcome range anxiety 🏁</div>
-            <div>Powered by IOTA Tangle</div>
+
+          <div>AuGeNe <u><a target="_blank" href="https://github.com/blockchained-mobility-hack/augene">Proof of reach</a></u> &nbsp;&nbsp;&nbsp; Overcome range anxiety 🏁</div>
+          <div>Powered by IOTA Tangle</div>
+
         </div>
       </DeckGL>
     );
@@ -328,43 +346,22 @@ class Map extends Component {
     }
   }
 }
-
-const mockFetch = url => {
-  switch (url) {
-    case "/state": {
-      return Promise.resolve({
-        routes: 20,
-        available_route_proofs: 7
-      });
-    }
-  }
-};
-
 class Publish extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      // hasTriggeredSimulation: false,
-      hasTriggeredSimulation: false,
-      // simulationState: null,
       simulationState: null
     };
   }
 
   triggerSimulation = () => {
-    //console.log("tigerring");
+
     fetch(URLS.TRIGGER_SIMULATION, {
       method: "POST",
       mode: "cors"
-    })
-      .then(() =>
-        this.setState({
-          hasTriggeredSimulation: true
-        })
-      )
-      .catch(e => {
-        console.log(e);
-      });
+    }).catch(e => {
+      console.log(e);
+    });
   };
 
   fetchSimulationState = () => {
@@ -394,15 +391,6 @@ class Publish extends Component {
       return <div>Loading...</div>;
     }
 
-    if (!this.state.hasTriggeredSimulation) {
-      return (
-        <div className="publish-page">
-          <div className="button" onClick={this.triggerSimulation}>
-            DO IT
-          </div>
-        </div>
-      );
-    }
     return (
       <div className="publish-page">
         <div className="stats">
@@ -414,6 +402,9 @@ class Publish extends Component {
             <div>Available Proofs:</div>
             <div>{this.state.simulationState.available_route_proofs}</div>
           </div>
+        </div>
+        <div className="button" onClick={this.triggerSimulation}>
+          DO IT
         </div>
       </div>
     );
