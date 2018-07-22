@@ -44,6 +44,21 @@ const getColorForBatteryCharge = ch => {
   }
 };
 
+const calcConsumptionPct = routes => {
+  return routes.map(route => {
+    const { data } = route;
+    const firstWaypoint = data.waypoints[0];
+    const lastWaypoint = data.waypoints[data.waypoints.length - 1];
+    return {
+      ...route,
+      data: {
+        ...data,
+        consumption_percentage: (firstWaypoint.battery_state_of_charge - lastWaypoint.battery_state_of_charge).toFixed(2)
+      }
+    };
+  });
+};
+
 class Map extends Component {
   constructor(props) {
     super(props);
@@ -74,7 +89,9 @@ class Map extends Component {
   componentWillMount() {
     fetch(URLS.DATA)
       .then(r => r.json())
-      .then(d => this.setState({ remoteData: RemoteData.loaded(d) }))
+      .then(d =>
+        this.setState({ remoteData: RemoteData.loaded(calcConsumptionPct(d)) })
+      )
       .catch(e =>
         this.setState({
           remoteData: RemoteData.error(`Error Loading Data: ${e}`)
