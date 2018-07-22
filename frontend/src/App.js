@@ -5,7 +5,7 @@ import { StaticMap } from "react-map-gl";
 import DeckGL, { PathLayer, IconLayer } from "deck.gl";
 import GL from "luma.gl/constants";
 import * as RemoteData from "./remote-data";
-import { BrowserRouter as Router, Route, Link, Switch } from "react-router-dom";
+import { HashRouter as Router, Route, Link, Switch } from "react-router-dom";
 import "./app.css";
 import { Easing, Tween, autoPlay } from "es6-tween";
 import moment from 'moment';
