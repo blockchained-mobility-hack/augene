@@ -3,6 +3,9 @@
 ## Platform
 IOTA
 
+## Online demonstration
+[Map](http://fightofreachanxiety.ddns.net/)
+
 ## Tools/SDKs/libraries used
 
 [Download](https://www.microsoft.com/net/download) and install .Net Core.
