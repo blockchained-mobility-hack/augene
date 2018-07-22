@@ -7,43 +7,138 @@ path.resolve(__dirname, "..", "..", "frontend", "public");
 const files = [
   {
     from: "Dortmund",
+
     to: "Aachen",
-    name: "Dor-Aac_sample trip.csv"
+
+    name: "Dor-Aac_sample trip.csv",
+
+    distance: "160 km"
   },
+
   {
     from: "Frankfurt a. Main",
+
     to: "Cologne",
-    name: "Ffm-Cgn_sample trip.csv"
+
+    name: "Ffm-Cgn_sample trip.csv",
+
+    distance: "187 km"
   },
+
   {
     from: "Hannover",
+
     to: "Hamburg",
-    name: "Han-Hh_sample trip.csv"
+
+    name: "Han-Hh_sample trip.csv",
+
+    distance: "162 km"
   },
+
   {
     from: "Muenchen",
+
     to: "Nuernberg",
-    name: "Muc-Nbg_sample trip.csv"
+
+    name: "Muc-Nbg_sample trip.csv",
+
+    distance: "151 km"
   },
 
   {
     from: "Nuernberg",
+
     to: "Wuerzburg",
-    name: "Nbg-Wzb_sample trip.csv"
+
+    name: "Nbg-Wzb_sample trip.csv",
+
+    distance: "92 km"
   },
 
   {
     from: "Potsdam",
+
     to: "Leipzig",
-    name: "Pot-Lpz_sample trip.csv"
+
+    name: "Pot-Lpz_sample trip.csv",
+
+    distance: "164 km"
   },
+
   {
     from: "Stuttgart",
     to: "Freiburg",
-    name: "Stg-Frb_sample trip.csv"
+    name: "Stg-Frb_sample trip.csv",
+    distance: "177 km"
+  },
+
+  {
+    from: "Augsburg",
+    to: "Reutlingen",
+    name: "Aug-Ret_sampleTrip.csv",
+    distance: "147 km"
+  },
+
+  {
+    from: "Hallstadt",
+
+    to: "Bad Wintersheim",
+
+    name: "Hal-wnt_smapleRoute.csv",
+
+    distance: "78 km"
+  },
+
+  {
+    from: "Stuttgart",
+
+    to: "Regensburg",
+
+    name: "Stu-Reg_sample trip.csv",
+
+    distance: "287 km"
+  },
+
+  {
+    from: "Cologne",
+
+    to: "Essen",
+
+    name: "Kol-Ess_sampleTrip.csv",
+
+    distance: "72 km"
+  },
+
+  {
+    from: "Jena",
+
+    to: "Goettingen",
+
+    name: "Jen-Got_sample trip.csv",
+
+    distance: "202 km"
+  },
+
+  {
+    from: "Kassel",
+
+    to: "Magedeburg",
+
+    name: "Kas-Mag_sample trip.csv",
+
+    distance: "246 km"
+  },
+
+  {
+    from: "Osnarbrueck",
+
+    to: "Koblenz",
+
+    name: "Osn-Kob_sample trip.csv",
+
+    distance: "295 km"
   }
 ];
-
 const trips = files.map((file, i) => {
   const fullPath = path.resolve(__dirname, "tripdata", file.name);
   const table = parse(fs.readFileSync(fullPath, "utf8"));
@@ -61,16 +156,26 @@ const trips = files.map((file, i) => {
       });
     }, {});
   });
+
+  const timeStamp = randInt(1514764800, 1532255813);
   return {
-    from: file.from,
-    to: file.to,
-    name: `Route ${i}`,
-    specifier: `Route-${i}`,
-    vehicle_type: `Vehicle ${i}`,
-    waypoints,
-    driving_behaviour: waypoints[0].driving_behaviour
+    data: {
+      from: file.from,
+      to: file.to,
+      distance: file.distance,
+      name: `Route ${i}`,
+      specifier: `Route-${i}`,
+      vehicle_type: `Vehicle ${i}`,
+      waypoints,
+      driving_behaviour: waypoints[0].driving_behaviour,
+      recording_date: timeStamp
+    }
   };
 });
+
+function randInt(min, max) {
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+}
 
 const outDir = path.resolve(
   __dirname,
@@ -95,7 +200,7 @@ const mockData = trips.map(data => {
   };
 });
 
-fs.writeFileSync(
-  path.resolve(__dirname, "..", "..", "frontend", "public", `mock-data.json`),
-  JSON.stringify(mockData, null, 4)
-);
+// fs.writeFileSync(
+//   path.resolve(__dirname, "..", "..", "frontend", "public", `mock-data.json`),
+//   JSON.stringify(mockData, null, 4)
+// );
