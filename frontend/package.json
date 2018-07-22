@@ -16,7 +16,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "rm -r FrontendHost/wwwroot/* && react-scripts build && mv build/* FrontendHost/wwwroot",
+    "build": "react-scripts build && mv build/* FrontendHost/wwwroot",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
     "deploy": "netlifyctl deploy"
