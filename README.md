@@ -6,6 +6,14 @@ IOTA
 ## Tools used
 ### Backend
 ### Frontend
+libraries: 
+- React.js 
+- Deck.gl
+- Tween.js
+- [more](https://github.com/blockchained-mobility-hack/augene/blob/master/frontend/package.json)
+
+we generated boilerplate code using [create-react-app](https://github.com/facebook/create-react-app)
+and we used parts of [this example project](https://github.com/uber/deck.gl/tree/master/examples/website/line) from deck.gl
 
 
 ## Participants
