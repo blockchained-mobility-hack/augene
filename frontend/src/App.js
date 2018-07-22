@@ -100,7 +100,7 @@ class Map extends Component {
   }
 
   onHover = ({ x, y, object }) => {
-    if (object == undefined) {
+    if (typeof object === "undefined") {
       this.setState({ hoverState: null });
     } else {
       this.setState({ hoverState: { x, y, object } });
