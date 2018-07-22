@@ -302,20 +302,68 @@ span {
 }
 
 .battery.green {
- background-color: rgb(80, 220, 100);
+ animation-name: colorGREEN;
+  animation-duration: 2s;
+  animation-iteration-count: infinite;
 }
 
 .battery.red {
-  background-color: rgb(220, 0, 80);
+  animation-name: colorRED;
+  animation-duration: 2s;
+  animation-iteration-count: infinite;
 }
 
 .battery.orange {
-  background-color: rgb(255, 165, 0);
+  animation-name: colorORANGE;
+  animation-duration: 2s;
+  animation-iteration-count: infinite;
 }
 
+@keyframes colorRED {
+  0% {
+    background-color: rgba(220, 0, 80, 0.2);
+  }
+  50% {
+    background-color: rgba(220, 0, 80, 1.0);
+  }
+  100% {
+    background-color: rgba(220, 0, 80, 0.2);
+  }
+}
 
+@keyframes colorGREEN {
+  0% {
+    background-color: rgba(80, 220, 100, 0.2);
+  }
+  50% {
+    background-color: rgba(80, 220, 100, 1.0);
+  }
+  100% {
+    background-color: rgba(80, 220, 100, 0.2);
+  }
+}
+
+@keyframes colorORANGE {
+  0% {
+    background-color: rgba(255, 165, 0, 0.2);
+  }
+  50% {
+    background-color: rgba(255, 165, 0, 1.0);
+  }
+  100% {
+    background-color: rgba(255, 165, 0, 0.2);
+  }
+}
 
 .imageiota {
   position: absolute;
 }
 
+.linebottom {
+  text-align: right;
+}
+
+.cartype {
+  text-align: left;
+  float:left;
+}
