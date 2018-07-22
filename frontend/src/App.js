@@ -185,9 +185,24 @@ class Map extends Component {
 
   renderMetaView = () => {
     var classed = "metaview";
+    var classedLine = "line";
+    var classedBattery = "battery";
     if (this.state.clickState != null) {
       classed = "metaview active";
+      if (getBatteryCharge(this.state.clickState.object) < 0) {
+          classedLine = "line red";
+          classedBattery = "battery red";
+      } else if(getBatteryCharge(this.state.clickState.object) < 10) {
+          classedLine = "line orange";
+          classedBattery = "battery orange";
+      } else {
+          classedLine = "line green";
+          classedBattery = "battery green";
+      }
     }
+
+   
+
      console.log(this.state.clickState);
     return (
       <div className={classed}>
@@ -200,14 +215,14 @@ class Map extends Component {
             <div>
               <div className="row">
                 <div>Name : {this.state.clickState.object.data.name}</div>
-                <div className="battery">Consumption percentage {this.state.clickState.object.data.consumption_percentage}%</div>
+                <div className={classedBattery}>Consumption percentage {this.state.clickState.object.data.consumption_percentage}%</div>
                 <div>Vehicle type : {this.state.clickState.object.data.vehicle_type} </div>
               </div>
               <div className="row">
                   <div>From<br /> <span> {this.state.clickState.object.data.from} </span></div>
                   <div className="road">
                       <div className="linetop">waypoints : {this.state.clickState.object.data.waypoints.length}</div>
-                      <div className="line"></div>
+                      <div className={classedLine}></div>
                   </div>
                   <div>To<br /> <span>{this.state.clickState.object.data.to}</span></div>
               </div>
@@ -243,7 +258,7 @@ class Map extends Component {
         <div className="tooltip" style={{ left: x, top: y }}>
           <div>{object.data.name}</div>
           <div>
-            Consumption percentage <b>{object.data.consumption_percentage}</b>
+            Consumption percentage <b>{object.data.consumption_percentage}%</b>
           </div>
         </div>
       );
