@@ -126,7 +126,7 @@ class Map extends Component {
           longitude: object.data.waypoints[halfway].longitude,
           zoom: 8,
           pitch: 50,
-          bearing: 20
+          bearing: 50
         },
         2000
       )
@@ -182,11 +182,13 @@ class Map extends Component {
     this._animateOut();
   };
 
+
   renderMetaView = () => {
     var classed = "metaview";
     if (this.state.clickState != null) {
       classed = "metaview active";
     }
+     console.log(this.state.clickState);
     return (
       <div className={classed}>
         <div className="container">
@@ -194,33 +196,40 @@ class Map extends Component {
             Close
           </div>
           {this.state.clickState != null && (
+            
             <div>
-              <div>Name : {this.state.clickState.object.data.name}</div>
-              <div>From : {this.state.clickState.object.data.from}</div>
-              <div>To : {this.state.clickState.object.data.to}</div>
-              <div>
-                Hash :{" "}
-                <a href={this.state.clickState.object.data.hash}>
-                  {this.state.clickState.object.data.hash}
-                </a>
+              <div className="row">
+                <div>Name : {this.state.clickState.object.data.name}</div>
+                <div className="battery">Consumption percentage {this.state.clickState.object.data.consumption_percentage}%</div>
+                <div>Vehicle type : {this.state.clickState.object.data.vehicle_type} </div>
               </div>
-              <div>
+              <div className="row">
+                  <div>From<br /> <span> {this.state.clickState.object.data.from} </span></div>
+                  <div className="road">
+                      <div className="linetop">waypoints : {this.state.clickState.object.data.waypoints.length}</div>
+                      <div className="line"></div>
+                  </div>
+                  <div>To<br /> <span>{this.state.clickState.object.data.to}</span></div>
+              </div>
+              <div className="iota">
+              <div className="rowi">
+               <div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Proof of reach by IOTA Tangle</div>
+               <div className="imageiota"><img width="20px" src="https://static.cryptotips.eu/wp-content/uploads/2018/02/iota-miota-logo-250x250.png"/></div>
+              </div>
+              <div className="rowi">
+                 <div> Hash :{" "}{this.state.clickState.object.hash}  </div>
+              </div>  
+              <div className="rowi">
+                <div>
                 Proof :{" "}
-                <a href={this.state.clickState.object.data.proof_link}>
-                  {this.state.clickState.object.data.proof_link}
+                <a target="_blank" href={this.state.clickState.object.proof_link}>
+                  {this.state.clickState.object.proof_link}
                 </a>
+                </div>
               </div>
-              <div>
-                Consumption percentage :{" "}
-                {this.state.clickState.object.data.consumption_percentage}
-              </div>
-              <div>
-                Vehicle type : {this.state.clickState.object.data.vehicle_type}
-              </div>
-              <div>
-                waypoints : {this.state.clickState.object.data.waypoints.length}
               </div>
             </div>
+
           )}
         </div>
       </div>
@@ -257,7 +266,7 @@ class Map extends Component {
       },
       getWidth: d =>
         hoverState && hoverState.object.data.name === d.data.name ? 1000 : 200,
-      widthMinPixels: 2,
+      widthMinPixels: 5,
       getPath: ({ data: route }) =>
         route.waypoints.map(wp => [wp.longitude, wp.latitude]),
       onHover: this.onHover,
@@ -290,7 +299,8 @@ class Map extends Component {
       sizeScale: 10,
       getPosition: ({ data: route }) => {
         const last = route.waypoints[route.waypoints.length - 1];
-        return [last.longitude, last.latitude];
+        return [last.longitude, last.latitude]
+
       },
       getIcon: d => "marker",
       getSize: d => 5,
@@ -317,6 +327,7 @@ class Map extends Component {
         />
         {this.renderTooltip}
         {this.renderMetaView}
+        
       </DeckGL>
     );
   };
@@ -339,10 +350,8 @@ const MapRoute = props => {
     <div>
       <Map />
       <div className="banner">
-        <div>
-          AuGeNe Explore &nbsp;&nbsp;&nbsp; Overcome your range anxiety 🏁
-        </div>
-        <div>Powered by IOTA Tangle</div>
+         <div>AuGeNe <u><a target="_blank" href="https://github.com/blockchained-mobility-hack/augene">Proof of reach</a></u> &nbsp;&nbsp;&nbsp; Overcome range anxiety 🏁</div>
+          <div>Powered by IOTA Tangle</div>
       </div>
     </div>
   );
@@ -357,6 +366,7 @@ class PublishRoute extends Component {
   }
 
   triggerSimulation = () => {
+
     fetch(URLS.TRIGGER_SIMULATION, {
       method: "POST",
       mode: "cors"
