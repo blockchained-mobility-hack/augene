@@ -1,3 +1,7 @@
 backend/TanglePublisher/bin/
 backend/TanglePublisher/obj/
 backend/.vs/
+frontend/FrontendHost/bin/
+frontend/FrontendHost/obj/
+frontend/.vs/
+frontend/FrontendHost/.vs/
