@@ -22,7 +22,7 @@ namespace FrontendHost
             WebHost.CreateDefaultBuilder(args)
                 .UseStartup<Startup>()
                 .UseKestrel(options => {
-                    options.Listen(IPAddress.Any, 81);
+                    options.Listen(IPAddress.Any, 80);
                 })
                 .Build();
     }
