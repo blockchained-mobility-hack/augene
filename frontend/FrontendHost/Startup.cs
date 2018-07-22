@@ -20,6 +20,10 @@ namespace FrontendHost
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
+            DefaultFilesOptions options = new DefaultFilesOptions();
+            options.DefaultFileNames.Clear();
+            options.DefaultFileNames.Add("Index.html");
+            app.UseDefaultFiles(options);
             app.UseStaticFiles();
         }
     }
