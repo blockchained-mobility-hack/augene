@@ -20,6 +20,9 @@ namespace TanglePublisher.Model
         [JsonProperty("to")]
         public string To { get; set; }
 
+        [JsonProperty("distance")]
+        public string Distance { get; set; }
+
         [JsonProperty("vehicle_type")]
         public string VehicleType { get; set; }
 
