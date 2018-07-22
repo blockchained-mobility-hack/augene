@@ -35,7 +35,6 @@ const getBatteryCharge = d => {
 };
 
 const getColorForBatteryCharge = ch => {
-  console.log("returning color for", ch);
   if (ch < 0) {
     return [220, 0, 80, 255];
   } else if (ch < 10) {
@@ -226,7 +225,6 @@ class Map extends Component {
   renderData = data => {
     const { viewState } = this.state;
     const { hoverState } = this.state;
-    console.log(data);
     const pathLayer = new PathLayer({
       id: "path-layer",
       pickable: true,
@@ -272,7 +270,6 @@ class Map extends Component {
       sizeScale: 10,
       getPosition: ({ data: route }) => {
         const last = route.waypoints[route.waypoints.length - 1];
-        console.log(last);
         return [last.longitude, last.latitude];
       },
       getIcon: d => "marker",
@@ -322,31 +319,16 @@ class Map extends Component {
     }
   }
 }
-
-const mockFetch = url => {
-  switch (url) {
-    case "/state": {
-      return Promise.resolve({
-        routes: 20,
-        available_route_proofs: 7
-      });
-    }
-  }
-};
-
 class Publish extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      // hasTriggeredSimulation: false,
       hasTriggeredSimulation: false,
-      // simulationState: null,
       simulationState: null
     };
   }
 
   triggerSimulation = () => {
-    console.log("tigerring");
     fetch(URLS.TRIGGER_SIMULATION, {
       method: "POST",
       mode: "cors"
