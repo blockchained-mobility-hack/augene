@@ -340,7 +340,6 @@ class Publish extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      hasTriggeredSimulation: false,
       simulationState: null
     };
   }
@@ -349,15 +348,9 @@ class Publish extends Component {
     fetch(URLS.TRIGGER_SIMULATION, {
       method: "POST",
       mode: "cors"
-    })
-      .then(() =>
-        this.setState({
-          hasTriggeredSimulation: true
-        })
-      )
-      .catch(e => {
-        console.log(e);
-      });
+    }).catch(e => {
+      console.log(e);
+    });
   };
 
   fetchSimulationState = () => {
@@ -387,15 +380,6 @@ class Publish extends Component {
       return <div>Loading...</div>;
     }
 
-    if (!this.state.hasTriggeredSimulation) {
-      return (
-        <div className="publish-page">
-          <div className="button" onClick={this.triggerSimulation}>
-            DO IT
-          </div>
-        </div>
-      );
-    }
     return (
       <div className="publish-page">
         <div className="stats">
@@ -407,6 +391,9 @@ class Publish extends Component {
             <div>Available Proofs:</div>
             <div>{this.state.simulationState.available_route_proofs}</div>
           </div>
+        </div>
+        <div className="button" onClick={this.triggerSimulation}>
+          DO IT
         </div>
       </div>
     );

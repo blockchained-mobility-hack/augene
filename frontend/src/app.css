@@ -156,6 +156,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-flow: column wrap;
 }
 
 .button:hover {
@@ -164,10 +165,11 @@ body {
 
 .publish-page .button {
   background-color: springgreen;
-  width: 500px;
-  height: 300px;
+  width: 250px;
+  height: 100px;
   display: flex;
-  font-size: 100px;
+  font-size: 40px;
+  padding: 5px;
   font-weight: 900;
   align-items: center;
   justify-content: center;
@@ -176,6 +178,10 @@ body {
 .publish-page .button:hover {
   background-color: black;
   color: white;
+}
+
+.publish-page .stats {
+  padding-bottom: 5rem;
 }
 
 .publish-page .stat {
@@ -197,7 +203,6 @@ body {
   position: fixed;
   z-index: 1000;
   width: 100%;
- 
   background-color: white;
   bottom: 0px;
   display: flex;
