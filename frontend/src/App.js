@@ -53,7 +53,10 @@ const calcConsumptionPct = routes => {
       ...route,
       data: {
         ...data,
-        consumption_percentage: (firstWaypoint.battery_state_of_charge - lastWaypoint.battery_state_of_charge).toFixed(2)
+        consumption_percentage: (
+          firstWaypoint.battery_state_of_charge -
+          lastWaypoint.battery_state_of_charge
+        ).toFixed(2)
       }
     };
   });
@@ -324,12 +327,7 @@ class Map extends Component {
         />
         {this.renderTooltip}
         {this.renderMetaView}
-        <div className="banner">
-
-          <div>AuGeNe <u><a target="_blank" href="https://github.com/blockchained-mobility-hack/augene">Proof of reach</a></u> &nbsp;&nbsp;&nbsp; Overcome range anxiety 🏁</div>
-          <div>Powered by IOTA Tangle</div>
-
-        </div>
+        
       </DeckGL>
     );
   };
@@ -346,7 +344,20 @@ class Map extends Component {
     }
   }
 }
-class Publish extends Component {
+
+const MapRoute = props => {
+  return (
+    <div>
+      <Map />
+      <div className="banner">
+         <div>AuGeNe <u><a target="_blank" href="https://github.com/blockchained-mobility-hack/augene">Proof of reach</a></u> &nbsp;&nbsp;&nbsp; Overcome range anxiety 🏁</div>
+          <div>Powered by IOTA Tangle</div>
+      </div>
+    </div>
+  );
+};
+
+class PublishRoute extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -393,18 +404,23 @@ class Publish extends Component {
 
     return (
       <div className="publish-page">
-        <div className="stats">
-          <div className="stat">
-            <div>Total Routes:</div>
-            <div>{this.state.simulationState.routes}</div>
-          </div>
-          <div className="stat">
-            <div>Available Proofs:</div>
-            <div>{this.state.simulationState.available_route_proofs}</div>
-          </div>
+        <div className="background">
+          <Map />
         </div>
-        <div className="button" onClick={this.triggerSimulation}>
-          DO IT
+        <div className="content">
+          <div className="stats">
+            <div className="stat">
+              <div>Total Routes:</div>
+              <div>{this.state.simulationState.routes}</div>
+            </div>
+            <div className="stat">
+              <div>Available Proofs:</div>
+              <div>{this.state.simulationState.available_route_proofs}</div>
+            </div>
+          </div>
+          <div className="button" onClick={this.triggerSimulation}>
+            DO IT
+          </div>
         </div>
       </div>
     );
@@ -416,8 +432,8 @@ export default class App extends Component {
     return (
       <Router>
         <Switch>
-          <Route exact path="/" component={Map} />
-          <Route path="/publish" component={Publish} />
+          <Route exact path="/" component={MapRoute} />
+          <Route path="/publish" component={PublishRoute} />
         </Switch>
       </Router>
     );
