@@ -8,6 +8,7 @@ import * as RemoteData from "./remote-data";
 import { BrowserRouter as Router, Route, Link, Switch } from "react-router-dom";
 import "./app.css";
 import { Easing, Tween, autoPlay } from "es6-tween";
+import moment from 'moment';
 
 const SERVER_ADDRESS = "http://178.128.206.215:5000";
 
@@ -187,6 +188,7 @@ class Map extends Component {
     var classed = "metaview";
     var classedLine = "line";
     var classedBattery = "battery";
+    var date = "";
     if (this.state.clickState != null) {
       classed = "metaview active";
       if (getBatteryCharge(this.state.clickState.object) < 0) {
@@ -199,7 +201,12 @@ class Map extends Component {
           classedLine = "line green";
           classedBattery = "battery green";
       }
+        console.log(moment);
+        console.log( this.state.clickState.object.data.recording_date);
+      date = moment( this.state.clickState.object.data.recording_date).format("MMM Do YY");
     }
+
+    
 
    
 
@@ -214,15 +221,22 @@ class Map extends Component {
             
             <div>
               <div className="row">
-                <div>Name : {this.state.clickState.object.data.name}</div>
+                <div>
+                  <div>Name : {this.state.clickState.object.data.name}</div>
+                   <div>Recorded : {date}</div>
+                </div>
+               
                 <div className={classedBattery}>Consumption percentage {this.state.clickState.object.data.consumption_percentage}%</div>
-                <div>Vehicle type : {this.state.clickState.object.data.vehicle_type} </div>
+                <div>
+                 <div className="cartype">Vehicle type : {this.state.clickState.object.data.vehicle_type} </div>
+                </div>
               </div>
               <div className="row">
                   <div>From<br /> <span> {this.state.clickState.object.data.from} </span></div>
                   <div className="road">
-                      <div className="linetop">waypoints : {this.state.clickState.object.data.waypoints.length}</div>
+                      <div className="linetop">distance : {this.state.clickState.object.data.waypoints.length} km</div>
                       <div className={classedLine}></div>
+                      <div className="linebottom">waypoints : {this.state.clickState.object.data.waypoints.length}</div>
                   </div>
                   <div>To<br /> <span>{this.state.clickState.object.data.to}</span></div>
               </div>
