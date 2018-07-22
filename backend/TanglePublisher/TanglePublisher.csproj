@@ -16,10 +16,25 @@
     <None Update="SampleRoutes\Input\Routes.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="SampleRoutes\Input_Fallback\Route_Test1.json">
+    <None Update="SampleRoutes\Input_Fallback\Route_Route-0.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="SampleRoutes\Input_Fallback\Route_Test2.json">
+    <None Update="SampleRoutes\Input_Fallback\Route_Route-1.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="SampleRoutes\Input_Fallback\Route_Route-2.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="SampleRoutes\Input_Fallback\Route_Route-3.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="SampleRoutes\Input_Fallback\Route_Route-4.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="SampleRoutes\Input_Fallback\Route_Route-5.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="SampleRoutes\Input_Fallback\Route_Route-6.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="SampleRoutes\Output\Routes.json">
