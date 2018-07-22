@@ -30,19 +30,20 @@ export const INITIAL_VIEW_STATE = {
 
 const { REACT_APP_MAPBOX_TOKEN } = process.env;
 
-const getBatteryCharge = (d) => {
+const getBatteryCharge = d => {
   return d.data.waypoints[d.data.waypoints.length - 1].battery_state_of_charge;
-}
+};
 
-const getColorForBatteryCharge = (ch) => {
-  if(ch < 0) {
-    return [220, 0, 80, 255]
-  } else if(ch < 10) {
-    return [255, 165, 0, 255]
+const getColorForBatteryCharge = ch => {
+  console.log("returning color for", ch);
+  if (ch < 0) {
+    return [220, 0, 80, 255];
+  } else if (ch < 10) {
+    return [255, 165, 0, 255];
   } else {
-    return [80, 220, 100, 255]
+    return [80, 220, 100, 255];
   }
-}
+};
 
 class Map extends Component {
   constructor(props) {
@@ -213,27 +214,27 @@ class Map extends Component {
       return (
         <div className="tooltip" style={{ left: x, top: y }}>
           <div>{object.data.name}</div>
-          <div>Consumption percentage <b>{object.data.consumption_percentage}</b></div>
+          <div>
+            Consumption percentage <b>{object.data.consumption_percentage}</b>
+          </div>
         </div>
       );
     }
     return null;
   };
-  
-
 
   renderData = data => {
     const { viewState } = this.state;
     const { hoverState } = this.state;
-    // consol.elog
-    console.log(data.map(getBatteryCharge));
+    console.log(data);
     const pathLayer = new PathLayer({
       id: "path-layer",
       pickable: true,
       data,
       getColor: d => {
-        const [r, g, b] = getColorForBatteryCharge(d);
-        const a = hoverState && hoverState.object.data.name === d.data.name ? 255 : 150;
+        const [r, g, b] = getColorForBatteryCharge(getBatteryCharge(d));
+        const a =
+          hoverState && hoverState.object.data.name === d.data.name ? 255 : 150;
         return [r, g, b, a];
       },
       getWidth: d =>
@@ -269,14 +270,14 @@ class Map extends Component {
         }
       },
       sizeScale: 10,
-      getPosition: ({data: route}) => {
+      getPosition: ({ data: route }) => {
         const last = route.waypoints[route.waypoints.length - 1];
         console.log(last);
-        return [last.longitude, last.latitude]
+        return [last.longitude, last.latitude];
       },
       getIcon: d => "marker",
       getSize: d => 5,
-      getColor:  getColorForBatteryCharge
+      getColor: d => getColorForBatteryCharge(getBatteryCharge(d))
     });
 
     return (
@@ -300,8 +301,10 @@ class Map extends Component {
         {this.renderTooltip}
         {this.renderMetaView}
         <div className="banner">
-            <div>AuGeNe Explore &nbsp;&nbsp;&nbsp; Overcome your range anxiety 🏁</div>
-            <div>Powered by IOTA Tangle</div>
+          <div>
+            AuGeNe Explore &nbsp;&nbsp;&nbsp; Overcome your range anxiety 🏁
+          </div>
+          <div>Powered by IOTA Tangle</div>
         </div>
       </DeckGL>
     );
