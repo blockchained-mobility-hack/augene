@@ -249,6 +249,7 @@ body {
   flex: 1;
   margin:10px;
   //background-color: gray;
+  overflow: hidden;
 }
 
 .iota {
@@ -279,19 +280,40 @@ span {
   border-top: 4px solid red;
 }
 
+.road .line.green {
+    border-top: 4px solid rgb(80, 220, 100);
+}
+
+.road .line.orange {
+   border-top: 4px solid rgb(255, 165, 0);
+}
+
+.road .line.red {
+   border-top: 4px solid rgb(220, 0, 80);
+}
+
 .battery {
   text-align: center;
-  /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#9dd53a+0,80c217+64,7cbc0a+100 */
-background: rgb(157,213,58); /* Old browsers */
-background: -moz-linear-gradient(left, rgba(157,213,58,1) 0%, rgba(128,194,23,1) 64%, rgba(124,188,10,1) 100%); /* FF3.6-15 */
-background: -webkit-linear-gradient(left, rgba(157,213,58,1) 0%,rgba(128,194,23,1) 64%,rgba(124,188,10,1) 100%); /* Chrome10-25,Safari5.1-6 */
-background: linear-gradient(to right, rgba(157,213,58,1) 0%,rgba(128,194,23,1) 64%,rgba(124,188,10,1) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
-filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#9dd53a', endColorstr='#7cbc0a',GradientType=1 ); /* IE6-9 */
+  
    
    padding-top:20px;
    padding-bottom: 20px;
    border-radius: 5px;
 }
+
+.battery.green {
+ background-color: rgb(80, 220, 100);
+}
+
+.battery.red {
+  background-color: rgb(220, 0, 80);
+}
+
+.battery.orange {
+  background-color: rgb(255, 165, 0);
+}
+
+
 
 .imageiota {
   position: absolute;
